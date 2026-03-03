@@ -157,6 +157,21 @@ TWILIO_AUTH_TOKEN=xxx
 TWILIO_PHONE_NUMBER=+1xxxxxxxxxx
 ```
 
+> **Note:** For deployed environments, set `FRONTEND_URL` to the frontend’s public URL (e.g. `https://sheon-ai-frontend.onrender.com`) so CORS works correctly.
+
+---
+
+### Step 3.5: Frontend Environment Variables
+
+Create a `.env` file inside `frontend/` (this is used by Vite and must start with `VITE_`):
+
+```env
+# point to the backend REST root (do not include trailing "/api")
+VITE_API_URL=https://sheon-ai-backend.onrender.com
+```
+
+When developing locally you can leave this blank or omit it – the dev server will proxy `/api` to `http://localhost:5000` per `vite.config.js`.
+
 ---
 
 ### Step 4: Seed the Database
@@ -354,7 +369,10 @@ Sheon addresses India's maternal mortality challenge head-on. By correcting for 
 ---
 
 *Built with 💜 for India's mothers.*
-#   S h e o n - a i  
- #   S h e o n - a i  
- #   S h e o n - a i  
+#   S h e o n - a i 
+ 
+ #   S h e o n - a i 
+ 
+ #   S h e o n - a i 
+ 
  

@@ -9,6 +9,7 @@ let socket;
 
 export default function ChatPanel({ roomId, recipientId, recipientName, isDoctor = false }) {
   const { user } = useAuth();
+  const API_URL = import.meta.env.VITE_API_URL || '';
   const [messages, setMessages] = useState([]);
   const [newMsg, setNewMsg] = useState('');
   const [isUrgent, setIsUrgent] = useState(false);
@@ -20,10 +21,10 @@ export default function ChatPanel({ roomId, recipientId, recipientName, isDoctor
     fetchMessages();
     
     if (!socket) {
-  socket = io('https://sheon-ai-backend.onrender.com', {
-    withCredentials: true
-  });
-}
+      socket = io(API_URL || 'https://sheon-ai-backend.onrender.com', {
+        withCredentials: true
+      });
+    }
     socket.emit('join-room', roomId);
     socket.on('receive-message', (msg) => {
       setMessages(prev => [...prev, msg]);
@@ -35,7 +36,8 @@ export default function ChatPanel({ roomId, recipientId, recipientName, isDoctor
 
   const fetchMessages = async () => {
     try {
-      const { data } = await axios.get(`https://sheon-ai-backend.onrender.com/api/chat/${roomId}/messages`);
+      const API_URL = import.meta.env.VITE_API_URL || '';
+      const { data } = await axios.get(`${API_URL}/api/chat/${roomId}/messages`);
       setMessages(data.messages);
       setLoading(false);
       setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
@@ -48,7 +50,7 @@ export default function ChatPanel({ roomId, recipientId, recipientName, isDoctor
 
    try {
     await axios.post(
-      `https://sheon-ai-backend.onrender.com/api/chat/${roomId}/send`,
+      `${API_URL}/api/chat/${roomId}/send`,
       {
         message: newMsg.trim(),
         receiverId: recipientId,
