@@ -72,5 +72,10 @@ server.listen(process.env.PORT || 5000, () => {
   console.log(`🚀 Server running on port ${process.env.PORT || 5000}`);
 });
 
-const chatRoutes = require('./routes/chatRoutes');
+// route for real-time chats (room‑based with messages stored in ChatMessage)
+const chatRoutes = require('./routes/chat');
 app.use('/api/chat', chatRoutes);
+
+// legacy file-based direct message routes are no longer used; delete or ignore
+// const oldChatRoutes = require('./routes/chatRoutes');
+// app.use('/api/chat-legacy', oldChatRoutes);
