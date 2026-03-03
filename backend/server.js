@@ -21,7 +21,9 @@ const io = new Server(server, {
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'https://sheon-ai-frontend.onrender.com',
   credentials: true
-}));app.use(express.json());
+}));
+
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 

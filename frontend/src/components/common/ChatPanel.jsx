@@ -19,7 +19,11 @@ export default function ChatPanel({ roomId, recipientId, recipientName, isDoctor
     if (!roomId) return;
     fetchMessages();
     
-    socket = io('http://localhost:5000');
+    if (!socket) {
+  socket = io('https://sheon-ai-backend.onrender.com', {
+    withCredentials: true
+  });
+}
     socket.emit('join-room', roomId);
     socket.on('receive-message', (msg) => {
       setMessages(prev => [...prev, msg]);
@@ -31,7 +35,7 @@ export default function ChatPanel({ roomId, recipientId, recipientName, isDoctor
 
   const fetchMessages = async () => {
     try {
-      const { data } = await axios.get(`/chat/${roomId}/messages`);
+      const { data } = await axios.get(`https://sheon-ai-backend.onrender.com/api/chat/${roomId}/messages`);
       setMessages(data.messages);
       setLoading(false);
       setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
@@ -39,18 +43,26 @@ export default function ChatPanel({ roomId, recipientId, recipientName, isDoctor
   };
 
   const sendMessage = async (e) => {
-    e.preventDefault();
-    if (!newMsg.trim()) return;
-    try {
-      await axios.post(`/chat/${roomId}/send`, {
+   e.preventDefault();
+   if (!newMsg.trim()) return;
+
+   try {
+    await axios.post(
+      `https://sheon-ai-backend.onrender.com/api/chat/${roomId}/send`,
+      {
         message: newMsg.trim(),
         receiverId: recipientId,
         isUrgent: isDoctor && isUrgent
-      });
-      setNewMsg('');
-      setIsUrgent(false);
-    } catch {}
-  };
+      }
+    );
+
+    setNewMsg('');
+    setIsUrgent(false);
+
+  } catch (err) {
+    console.error("Message send error:", err);
+  }
+};
 
   const isMyMessage = (msg) => msg.senderId?._id === user?._id || msg.senderId === user?._id;
 
