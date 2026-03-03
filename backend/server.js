@@ -9,6 +9,15 @@ const app = express();
 const server = http.createServer(app);
 const frontendURL = process.env.FRONTEND_URL || 'https://sheon-ai-frontend.onrender.com';
 
+// Ensure a JWT secret is available. In production you MUST set JWT_SECRET
+// in your environment (Render/Heroku/etc). If it's missing we'll fall back
+// to a temporary development secret to avoid runtime crashes — this is
+// insecure and should only be relied on until you set the real env var.
+if (!process.env.JWT_SECRET) {
+  console.warn('⚠️  Warning: JWT_SECRET is not set. Using temporary fallback secret. Set JWT_SECRET in environment for production.');
+  process.env.JWT_SECRET = 'dev_fallback_secret_sheon_ai_change_me';
+}
+
 const io = new Server(server, {
   cors: {
     origin: frontendURL,
