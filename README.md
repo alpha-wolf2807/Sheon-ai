@@ -183,6 +183,13 @@ node seed.js
 
 This creates all demo accounts + sample data.
 
+> **Note:** The backend previously had a legacy `chatRoutes.js` file with
+> simple `/api/chat/send` and `/api/chat/:user1/:user2` endpoints. The
+> current version uses `routes/chat.js` (room-based, `/api/chat/:roomId/messages`
+> and `/api/chat/:roomId/send`). Older deployments may still have the
+> obsolete route attached — make sure you pull the latest code and redeploy
+> the backend so that the UI’s `ChatPanel` works correctly.
+
 ---
 
 ### Step 5: Run the Application
